@@ -1,0 +1,21 @@
+# --- .gitignore for Pocol ---
+
+# 1. 機密情報 (絶対に公開しない！)
+.env
+
+# 2. 仮想環境とパッケージ
+.venv/
+__pycache__/
+
+# 3. データベース (ローカルの記憶ファイル)
+*.db
+*.sqlite3
+
+# 4. OS/エディタの一時ファイル
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 5. ログファイルなど
+*.log
