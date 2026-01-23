@@ -6,6 +6,7 @@ Features:
 - Vision: Moondream
 - Tools: Weather, Gourmet, Books, Web Search
 - Memory: SQLite (User-isolated)
+- Help Command: Embed based tutorial
 """
 
 import os
@@ -391,6 +392,23 @@ class PocolBot(discord.Client):
                 async with message.channel.typing():
                     # Clean user input (remove mention)
                     user_text = message.content.replace(f'<@{self.user.id}>', '').strip()
+
+                    # --- Command: Help (Usage Guide) ---
+                    if user_text in ["使い方", "ヘルプ", "help", "!help"]:
+                        embed = discord.Embed(
+                            title="🐶 Pocol (ポコル) の使い方",
+                            description="Intel N100搭載の省電力AI Botだワン！\nメンションか返信で話しかけてね。",
+                            color=0x00ff00 # Green
+                        )
+                        embed.add_field(name="🗣️ 会話", value="普通に話しかけると Qwen 2.5 が返事をするよ。", inline=False)
+                        embed.add_field(name="🌐 Web検索", value="「ニュース」「調べて」「トレンド」を入れるとネット検索するよ。", inline=False)
+                        embed.add_field(name="📷 画像認識", value="画像を貼って「これは何？」と聞くと内容を解説するよ。", inline=False)
+                        embed.add_field(name="🛠️ 便利機能", value="「天気」「焼肉」「本」などの単語で専用検索ができるよ。", inline=False)
+                        embed.add_field(name="🗑️ 記憶消去", value="「!reset」または「忘れて」で会話ログをリセット！", inline=False)
+                        embed.set_footer(text="Powered by Ollama (Qwen/DeepSeek/Moondream)")
+                        
+                        await message.reply(embed=embed)
+                        return
                     
                     # --- Command: Reset Memory ---
                     if user_text in ["!reset", "忘れて"]:

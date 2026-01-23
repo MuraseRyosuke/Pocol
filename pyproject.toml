@@ -20,3 +20,7 @@ dependencies = [
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+# ★ここから下を追加しました★
+[tool.hatch.build.targets.wheel]
+packages = ["."]
