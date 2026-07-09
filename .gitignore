@@ -1,36 +1,40 @@
-# --- Python General ---
-__pycache__/
-*.py[cod]
-*$py.class
+# ==========================================
+# Pocol .gitignore
+# ==========================================
 
-# --- Virtual Environments (uv / venv) ---
-# 仮想環境フォルダは絶対にアップロードしない
+# --- 1. Environment Variables & Secrets (CRITICAL) ---
+# ※APIキーやトークンが含まれるため、絶対に公開・コミットしてはいけません
+.env
+.env.*
+
+# --- 2. Database & Backups ---
+# ※会話履歴や学習データ（個人情報）が含まれるため除外します
+*.db
+*.sqlite
+*.sqlite3
+pocol*.db
+
+# --- 3. Virtual Environments ---
+# ※仮想環境フォルダ（uv / venv）
 .venv/
 venv/
 env/
 
-# --- Environment Variables (CRITICAL) ---
-# APIキーが含まれるため、絶対に公開してはいけません
-.env
-.env.*
+# --- 4. Python General ---
+__pycache__/
+*.py[cod]
+*$py.class
 
-# --- Database (SQLite) ---
-# 会話履歴（個人情報）が含まれるため除外します
-*.db
-*.sqlite
-*.sqlite3
-pocol.db
-
-# --- Logs & Temporary Files ---
+# --- 5. Logs & Temporary Files ---
 *.log
 *.tmp
 
-# --- IDE / Editor Settings ---
-# エディタの個人設定ファイル
+# --- 6. IDE / Editor Settings ---
+# ※エディタの個人設定ファイル
 .vscode/
 .idea/
 
-# --- Operating System Files ---
+# --- 7. Operating System Files ---
 # Mac
 .DS_Store
 # Windows
@@ -38,8 +42,7 @@ Thumbs.db
 Desktop.ini
 ehthumbs.db
 
-# --- Cache (Future Proofing) ---
-# 将来テストや整形ツールを入れた時用
+# --- 8. Caches (Future Proofing) ---
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/

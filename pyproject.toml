@@ -1,7 +1,7 @@
 [project]
 name = "pocol"
-version = "1.0.0"
-description = "Intel N100搭載ミニPCで動作する、省電力・自律型AI Discord Bot (Qwen 2.5 + Moondream)"
+version = "1.5.0"
+description = "Intel N100搭載ミニPCで動作する、省電力・自律型AI Discord Bot (Gemma 4 E2B QAT Edition)"
 readme = "README.md"
 requires-python = ">=3.14"
 authors = [
@@ -21,6 +21,5 @@ dependencies = [
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-# ★ここから下を追加しました★
 [tool.hatch.build.targets.wheel]
 packages = ["."]
