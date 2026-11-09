@@ -12,7 +12,7 @@ dependencies = [
     "aiohttp>=3.13.3",
     "aiosqlite>=0.22.1",
     "discord-py>=2.6.4",
-    "duckduckgo-search>=8.1.1",
+    "ddgs",  # ★ここを duckduckgo-search から ddgs に変更しました
     "ollama>=0.6.1",
     "python-dotenv>=1.2.1",
 ]

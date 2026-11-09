@@ -17,7 +17,7 @@ from discord.ext import tasks
 import ollama
 import aiohttp
 import aiosqlite
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 from dotenv import load_dotenv
 
 # --- Configuration & Constants ---
@@ -214,9 +214,14 @@ class Tools:
 
     @staticmethod
     async def search_web(user_text: str) -> str:
-        keyword = Tools.extract_keywords(user_text)
+        keyword = Tools.extract_keywords(user_text).strip()
+        if not keyword:
+            return "検索キーワードが見つかりませんでした。"
+
         try:
-            results = await asyncio.to_thread(lambda: list(DDGS().text(keywords=keyword, region='jp-jp', max_results=3)))
+            results = await asyncio.to_thread(
+                lambda: list(DDGS().text(query=keyword, region='jp-jp', max_results=3))
+            )
             if not results: 
                 return "Web情報が見つかりません。"
                 
@@ -233,7 +238,6 @@ class Brain:
 
     @staticmethod
     async def think(user_id: int, user_input: str, context_data: str = "", image_bytes: bytes = None) -> tuple[str, str]:
-        # 記憶とコンテキストの構築
         past_memories = await Memory.recall_knowledge(user_id, user_input)
         history = await Memory.get_recent_history(user_id)
         
@@ -247,7 +251,7 @@ class Brain:
         
         user_msg = {'role': 'user', 'content': current_content}
         if image_bytes:
-            user_msg['images'] = [image_bytes]  # Gemma 4のネイティブ画像認識を使用
+            user_msg['images'] = [image_bytes]
             
         messages.append(user_msg)
 
@@ -327,7 +331,12 @@ class PocolBot(discord.Client):
                 
             try:
                 t_data = await Tools.search_web("最近の面白いニュース")
-                prompt = f"以下のニュースでDiscord用の「今週のトークテーマ」を1つ作り、「みんなはどう思うワン？」と聞いて。\n{t_data}"
+                
+                if "見つかりません" in t_data or "エラー" in t_data:
+                    prompt = "最近の季節や日常の話題（食べ物、趣味など）から、Discordのみんなが盛り上がる「今週のトークテーマ」を1つ作り、「みんなはどう思うワン？」と聞いて。"
+                else:
+                    prompt = f"以下のニュースでDiscord用の「今週のトークテーマ」を1つ作り、「みんなはどう思うワン？」と聞いて。\n{t_data}"
+                
                 theme, _ = await Brain.think(0, prompt)
                 
                 await ch.send(embed=discord.Embed(title="🐶 今週のテーマ", description=theme, color=0xffa500))
